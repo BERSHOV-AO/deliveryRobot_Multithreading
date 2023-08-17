@@ -3,13 +3,15 @@ import java.util.*;
 public class Main {
 
     public static final Map<Integer, Integer> sizeToFreq = new HashMap<>();
-    public static int valueCommandCounter;
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
+
+        List<Thread> threads = new ArrayList<>();
 
         for (int i = 0; i < 100; i++) {
-            new Thread(() -> {
+            Runnable logic = () -> {
 
+                int valueCommandCounter;
                 valueCommandCounter = robotCommandCounter(generateRoute("RLRFR", 100), "R");
 
                 synchronized (sizeToFreq) {
@@ -20,24 +22,34 @@ public class Main {
                         sizeToFreq.put(valueCommandCounter, 1);
                     }
                 }
-            }).start();
+            };
+
+            Thread thread = new Thread(logic);
+            thread.start();
+            threads.add(thread);
         }
 
-        synchronized (sizeToFreq) {
+        for (Thread thread : threads) {
+            thread.join();
+        }
 
-            Map.Entry<Integer, Integer> maxEntry = maxEntryInMap(sizeToFreq);
+        Map.Entry<Integer, Integer> maxEntry = maxEntryInMap(sizeToFreq);
 
-            System.out.printf("Самое частое количество повторений %d (встретилось %d раз)", maxEntry.getKey(),
-                    maxEntry.getValue());
-            System.out.println();
+        System.out.printf("Самое частое количество повторений %d (встретилось %d раз)", maxEntry.getKey(),
+                maxEntry.getValue());
+        System.out.println();
 
-            System.out.println("Другие размеры:");
+        System.out.println("Другие размеры:");
 
-            for (Map.Entry<Integer, Integer> mapCommandCount : sizeToFreq.entrySet()) {
-                if (maxEntry.getKey() != mapCommandCount.getKey()) {
-                    System.out.println(" - " + mapCommandCount.getKey() + " " + "(" + mapCommandCount.getValue() +
-                            " раз)");
-                }
+        int sum = 0;
+        for (Map.Entry<Integer, Integer> mapCommandCount : sizeToFreq.entrySet()) {
+
+            if (maxEntry.getKey() != mapCommandCount.getKey()) {
+                System.out.println(" - " + mapCommandCount.getKey() + " " + "(" + mapCommandCount.getValue() +
+                        " раз)");
+
+                sum += mapCommandCount.getValue();
+
             }
         }
     }
