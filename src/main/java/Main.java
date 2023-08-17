@@ -7,7 +7,7 @@ public class Main {
 
     public static void main(String[] args) {
 
-        for (int i = 0; i < 1000; i++) {
+        for (int i = 0; i < 100; i++) {
             new Thread(() -> {
 
                 valueCommandCounter = robotCommandCounter(generateRoute("RLRFR", 100), "R");
@@ -15,7 +15,7 @@ public class Main {
                 synchronized (sizeToFreq) {
 
                     if (sizeToFreq.containsKey(valueCommandCounter)) {
-                        sizeToFreq.put(valueCommandCounter, sizeToFreq.get(valueCommandCounter) + 1);
+                        sizeToFreq.replace(valueCommandCounter, sizeToFreq.get(valueCommandCounter) + 1);
                     } else {
                         sizeToFreq.put(valueCommandCounter, 1);
                     }
