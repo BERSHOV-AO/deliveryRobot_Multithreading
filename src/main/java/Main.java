@@ -41,14 +41,11 @@ public class Main {
 
         System.out.println("Другие размеры:");
 
-        int sum = 0;
         for (Map.Entry<Integer, Integer> mapCommandCount : sizeToFreq.entrySet()) {
 
             if (maxEntry.getKey() != mapCommandCount.getKey()) {
                 System.out.println(" - " + mapCommandCount.getKey() + " " + "(" + mapCommandCount.getValue() +
                         " раз)");
-
-                sum += mapCommandCount.getValue();
 
             }
         }
