@@ -37,16 +37,14 @@ public class Main {
 
         System.out.printf("Самое частое количество повторений %d (встретилось %d раз)", maxEntry.getKey(),
                 maxEntry.getValue());
-        System.out.println();
 
-        System.out.println("Другие размеры:");
+        System.out.println("\nДругие размеры:");
 
         for (Map.Entry<Integer, Integer> mapCommandCount : sizeToFreq.entrySet()) {
 
             if (maxEntry.getKey() != mapCommandCount.getKey()) {
                 System.out.println(" - " + mapCommandCount.getKey() + " " + "(" + mapCommandCount.getValue() +
                         " раз)");
-
             }
         }
     }
